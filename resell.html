@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage your resale tickets | FIFA</title>
+    <style>
+        /* RESET & BASE STYLES */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.4;
+            padding-bottom: 80px; 
+        }
+        a { color: #0a4dff; text-decoration: none; cursor: pointer; }
+        a:hover { text-decoration: underline; }
+
+        /* HEADER */
+        header {
+            background-color: #000;
+            color: #fff;
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .fifa-text-logo { font-size: 28px; font-weight: 800; letter-spacing: -1.5px; }
+        .fifa-text-logo sup { font-size: 11px; font-weight: 600; vertical-align: super; }
+        .header-main-logo { height: 52px; width: auto; display: block; }
+        .header-right { display: flex; align-items: center; gap: 18px; }
+        .visa-pill {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid #444;
+            padding-right: 15px;
+            margin-right: 5px;
+        }
+        .visa-brand { display: flex; align-items: center; gap: 6px; font-style: italic; font-weight: 900; font-size: 16px; line-height: 1; }
+        .mini-logo-img { height: 18px; width: auto; display: block; }
+        .visa-pill .tagline { font-size: 9px; color: #cfcfcf; font-style: normal; font-weight: 400; margin-top: 3px; }
+        .nav-link { color: #fff; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
+        .nav-sep { color: #444; }
+
+        /* LAYOUT */
+        .container {
+            max-width: 1280px;
+            margin: 36px auto;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 28px;
+            padding: 0 24px;
+        }
+
+        /* CONTENT */
+        h1 { font-size: 28px; font-weight: 800; margin-bottom: 24px; }
+        
+        .blue-alert {
+            background-color: #eef4ff;
+            border: 1px solid #dce8ff;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .info-icon-circle {
+            background: #0a4dff;
+            color: #fff;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .info-text { font-size: 13px; line-height: 1.6; color: #333; }
+
+        /* TICKET CARDS */
+        .card { background: #fff; border-radius: 6px; padding: 24px; margin-bottom: 16px; border: 1px solid #e0e0e0; }
+        .ticket-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+        .match-title { font-size: 17px; font-weight: 700; color: #000; }
+        .match-meta { font-size: 14px; color: #666; margin-bottom: 24px; }
+        
+        .btn-calendar {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .select-row {
+            border-top: 1px solid #f0f0f0;
+            padding-top: 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .select-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: #000; cursor: pointer; }
+
+        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+        .ticket-info { font-size: 13px; font-weight: 500; }
+        .btn-view {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        /* NEW STYLE CONFIGURATIONS FOR THE DROPDOWN CONTENT FROM IMAGE */
+        .dropdown-content { display: none; }
+        .btn-remove-all-tickets {
+            background-color: #211932;
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 18px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            text-transform: uppercase;
+            display: block;
+            margin: 12px 0 12px auto; /* right aligned, visible */
+        }
+        .btn-remove-single-ticket {
+            background-color: #211932;
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 18px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .inner-dropdown-container {
+            border-top: 1px solid #f0f0f0;
+            padding-top: 16px;
+            margin-top: 16px;
+            clear: both;
+        }
+        .inner-ticket-box {
+            background: #fafafa;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        .btn-view.active-dropdown {
+            background-color: #f1f5f9;
+            border-color: #e2e8f0;
+        }
+
+        /* SIDEBAR */
+        aside { display: flex; flex-direction: column; gap: 18px; }
+        .side-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+        .side-nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 22px;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 500;
+            gap: 12px;
+            cursor: pointer;
+        }
+        .side-nav-item.active { background: #f0f0f0; font-weight: 700; }
+        .side-nav-item.indent { padding-left: 54px; font-size: 13px; }
+        .icon-svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+        .info-card { padding: 20px; }
+        .info-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+        .info-card ul { list-style: none; }
+        .info-card ul li { margin-bottom: 8px; font-size: 14px; }
+        .sidebar-img { width: 100%; display: block; }
+
+        /* STICKY ACTION BAR */
+        #transferActionBar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid #e0e0e0;
+            padding: 16px 40px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            z-index: 2000;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        }
+        .sel-count-text { font-size: 14px; font-weight: 700; }
+        .btn-text-action { font-size: 13px; font-weight: 800; color: #000; background: none; border: none; text-transform: uppercase; cursor: pointer; }
+        .btn-pill-black { background: #000; color: #fff; padding: 10px 28px; border-radius: 24px; font-size: 13px; font-weight: 800; text-transform: uppercase; border: none; cursor: pointer; }
+
+        /* MODAL (POPUP) STYLES */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: none; justify-content: center; align-items: center; z-index: 3000; }
+        .modal-content { background: #fff; width: 100%; max-width: 500px; border-radius: 12px; padding: 32px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .modal-content h3 { font-size: 19px; font-weight: 800; margin-bottom: 16px; line-height: 1.3; }
+        .modal-body-text { font-size: 11px; color: #333; line-height: 1.5; margin-bottom: 24px; }
+        .modal-body-text a { text-decoration: underline; color: #000; font-weight: 700; }
+        .input-group { margin-bottom: 24px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+        .input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 12px; align-items: center; }
+        .btn-modal-cancel { background: none; border: none; font-weight: 700; font-size: 13px; text-transform: uppercase; cursor: pointer; padding: 10px 15px; }
+        .btn-modal-transfer { background: #1a1a1a; color: #fff; border: none; border-radius: 20px; padding: 10px 24px; font-weight: 700; font-size: 13px; text-transform: uppercase; cursor: pointer; }
+
+        /* FOOTER */
+        footer { background: #000; color: #fff; margin-top: 40px; padding-bottom: 20px; position: relative; z-index: 10; width: 100%; }
+        .footer-top { max-width: 1280px; margin: 0 auto; padding: 28px 32px; display: flex; align-items: center; }
+        .footer-fifa-logo { font-weight: 800; font-size: 22px; }
+        .partners-section { padding: 30px 32px; max-width: 1280px; margin: 0 auto; text-align: center; }
+        .partner-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 18px; color: #fff; }
+        .partner-row { display: flex; justify-content: space-around; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+        .brand { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+        .brand.italic { font-style: italic; }
+        .brand.thin { font-weight: 300; }
+        .copyright { max-width: 1280px; margin: 0 auto; padding: 18px 32px; text-align: right; font-size: 11px; color: #ccc; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <link rel="shortcut icon" href="download.png" type="image/x-icon">
+        <link rel="icon" href="download.png" type="image/x-icon">
+
+        <div class="header-left">
+            <div class="fifa-text-logo">FIFA<sup>®</sup></div>
+            <img src="logo-2026.png" alt="FIFA 26 Logo" class="header-main-logo">
+        </div>
+        <div class="header-right">
+            <div class="visa-pill">
+                <div class="visa-brand"><span>VISA</span><span style="font-weight:300; opacity:0.5;">|</span><img src="logo-2026.png" class="mini-logo-img"></div>
+                <div class="tagline">The Official Way to Pay</div>
+            </div>
+            <a href="#" class="nav-link">EN</a><span class="nav-sep">|</span>
+            <a href="#" class="nav-link">RESELL</a><span class="nav-sep">|</span>
+            <a href="#" class="nav-link">BUY TICKETS</a><span class="nav-sep">|</span>
+            <a href="#" class="nav-link" id="displayNameHeader">OBINNA OGBONNA</a><span class="nav-sep">|</span>
+            <a href="#" class="nav-link">LOGOUT</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <h1>Manage your resale tickets</h1>
+
+            <div class="blue-alert">
+                <div class="info-icon-circle">i</div>
+                <div class="info-text" id="display-alert">
+                    You are entitled to submit for resale and/or transfer the below tickets...
+                </div>
+            </div>
+
+            <!-- Card 1 -->
+            <div class="card">
+                <div class="ticket-header">
+                    <div class="match-title" id="display-t1-title">Match 1</div>
+                    <button class="btn-calendar"><svg class="icon-svg" style="width:14px; height:14px;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Add to calendar</button>
+                </div>
+                <div class="match-meta" id="display-t1-meta">Friday</div>
+                <div class="select-row"><input type="checkbox" class="ticket-checkbox"> Select all</div>
+                <!--<button class="btn-remove-all-tickets">REMOVE ALL TICKET(S) FROM RESALE</button>-->
+                <div class="card-footer">
+                    <div class="ticket-info" id="display-t1-info">Loading...</div>
+                    <button class="btn-view">View my ticket(s) <svg class="icon-svg" style="width:12px; height:12px;" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+                </div>
+                <div class="dropdown-content inner-dropdown-container" id="dropdown-t1"></div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card">
+                <div class="ticket-header">
+                    <div class="match-title" id="display-t2-title">Match 2</div>
+                    <button class="btn-calendar"><svg class="icon-svg" style="width:14px; height:14px;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Add to calendar</button>
+                </div>
+                <div class="match-meta" id="display-t2-meta">Date</div>
+                <div class="select-row"><input type="checkbox" class="ticket-checkbox"> Select all</div>
+                <!--<button class="btn-remove-all-tickets">REMOVE ALL TICKET(S) FROM RESALE</button>-->
+                <div class="card-footer">
+                    <div class="ticket-info" id="display-t2-info">Loading...</div>
+                    <button class="btn-view">View my ticket(s) <svg class="icon-svg" style="width:12px; height:12px;" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+                </div>
+                <div class="dropdown-content inner-dropdown-container" id="dropdown-t2"></div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card">
+                <div class="ticket-header">
+                    <div class="match-title" id="display-t3-title">Match 3</div>
+                    <button class="btn-calendar"><svg class="icon-svg" style="width:14px; height:14px;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Add to calendar</button>
+                </div>
+                <div class="match-meta" id="display-t3-meta">Date</div>
+                <div class="select-row"><input type="checkbox" class="ticket-checkbox"> Select all</div>
+               <!-- <button class="btn-remove-all-tickets">REMOVE ALL TICKET(S) FROM RESALE</button>-->
+                <div class="card-footer">
+                    <div class="ticket-info" id="display-t3-info">Loading...</div>
+                    <button class="btn-view">View my ticket(s) <svg class="icon-svg" style="width:12px; height:12px;" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+                </div>
+                <div class="dropdown-content inner-dropdown-container" id="dropdown-t3"></div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card">
+                <div class="ticket-header">
+                    <div class="match-title" id="display-t4-title">Match 4</div>
+                    <button class="btn-calendar"><svg class="icon-svg" style="width:14px; height:14px;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Add to calendar</button>
+                </div>
+                <div class="match-meta" id="display-t4-meta">Date</div>
+                <div class="select-row"><input type="checkbox" class="ticket-checkbox"> Select all</div>
+                <!--<button class="btn-remove-all-tickets">REMOVE ALL TICKET(S) FROM RESALE</button>-->
+                <div class="card-footer">
+                    <div class="ticket-info" id="display-t4-info">Loading...</div>
+                    <button class="btn-view">View my ticket(s) <svg class="icon-svg" style="width:12px; height:12px;" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+                </div>
+                <div class="dropdown-content inner-dropdown-container" id="dropdown-t4"></div>
+            </div>
+        </main>
+
+        <aside>
+            <div class="side-card">
+                <nav>
+                    <a href="index.html" class="side-nav-item"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg> Homepage</a>
+                    <div class="side-nav-item"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V9z"/></svg> TICKETS</div>
+                    <a href="admin-resell.html"><div class="side-nav-item indent">My tickets</div></a>
+                    <div class="side-nav-item indent active">Resell/Transfer Tickets</div>
+                    <div class="side-nav-item indent">Ticket purchase summary</div>
+                    <div class="side-nav-item"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Account settings</div>
+                    <a href="admin.html"><div class="side-nav-item indent">Profile</div></a>
+                    <div class="side-nav-item"><svg class="icon-svg" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg> Buy tickets</div>
+                </nav>
+            </div>
+
+            <div class="side-card"><img src="visa-card.png" alt="Visa" class="sidebar-img"></div>
+            <div class="side-card"><img src="hospitality-promo.png" alt="Hospitality" class="sidebar-img"></div>
+
+            <div class="side-card info-card">
+                <h3>General information</h3>
+                <ul style="list-style: none;">
+                    <li><a href="#">Legal documents</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Match schedule</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <div id="transferActionBar">
+        <div class="sel-count-text" id="selectionText">0 tickets</div>
+        <button class="btn-text-action" id="openModalBtn">TRANSFER TICKET(S)</button>
+        <!-- RESELL button removed -->
+    </div>
+
+    <div class="modal-overlay" id="transferModal">
+        <div class="modal-content">
+            <h3>Please read carefully before transferring your ticket(s):</h3>
+            <div class="modal-body-text" id="display-modal"></div>
+            <div class="input-group">
+                <label>Transfer Recipient's email address *</label>
+                <input type="email" placeholder="">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" id="closeModalBtn">CANCEL</button>
+                <button class="btn-modal-transfer" id="confirmTransferBtn">TRANSFER TICKET(S)</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content" style="text-align: center; max-width: 420px; padding: 40px 32px;">
+            <div style="width: 64px; height: 64px; background: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <svg viewBox="0 0 24 24" style="width: 32px; height: 32px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 12px; color: #000;">Transfer Successful</h3>
+            <p style="font-size: 14px; color: #444; line-height: 1.5; margin-bottom: 28px;">Your selected tickets have been successfully transferred. An email confirmation has been sent to the recipient.</p>
+            <button class="btn-modal-transfer" id="closeSuccessBtn" style="width: 100%; padding: 14px; font-size: 14px;">DONE</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-top"><div class="footer-fifa-logo">FIFA<sup>®</sup></div></div>
+        <div class="partners-section">
+            <div class="partner-label">FIFA PARTNERS</div>
+            <div class="partner-row"><div class="brand thin">aramco</div><div class="brand">adidas</div><div class="brand">ADI</div><div class="brand italic">Coca-Cola</div><div class="brand">HYUNDAI | KIA</div><div class="brand">Lenovo</div><div class="brand">QATAR AIRWAYS</div><div class="brand italic">VISA</div></div>
+        </div>
+        <div class="copyright">Copyright © 1994-2026 FIFA. All rights reserved.</div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load Global Data
+        document.getElementById('displayNameHeader').innerText = localStorage.getItem('resell_username') || "OBINNA OGBONNA";
+        document.getElementById('display-alert').innerHTML = localStorage.getItem('resell_alert') || "You are entitled to submit for resale...";
+        document.getElementById('display-modal').innerHTML = localStorage.getItem('resell_modal') || "Transfers are final...";
+
+        // Load Ticket Data & Generate Dropdowns for all 4 cards
+        for (let i = 1; i <= 4; i++) {
+            const title = localStorage.getItem(`resell_t${i}-title`);
+            const meta = localStorage.getItem(`resell_t${i}-meta`);
+            const countStr = localStorage.getItem(`resell_t${i}-count`);
+            const count = countStr ? parseInt(countStr) : (i === 1 ? 2 : 1);
+            const category = localStorage.getItem(`resell_t${i}-category`) || 'Category 3';
+            const price = localStorage.getItem(`resell_t${i}-price`) || '265.00';
+            const currency = localStorage.getItem(`resell_t${i}-currency`) || 'USD';
+            
+            const seating = localStorage.getItem(`resell_t${i}-seating`) || 'Main Stand Right - Upper Tier - Block 316 - Row R';
+            const seatsStr = localStorage.getItem(`resell_t${i}-seats`) || (i === 1 ? '5, 6' : '5');
+            const seatArray = seatsStr.split(',').map(s => s.trim());
+
+            if (title) document.getElementById(`display-t${i}-title`).innerText = title;
+            if (meta) document.getElementById(`display-t${i}-meta`).innerHTML = meta;
+
+            const ticketText = count === 1 ? 'ticket' : 'tickets';
+            const summaryElement = document.getElementById(`display-t${i}-info`);
+            if (summaryElement) summaryElement.innerText = `${count} ${ticketText} - ${category} - ${currency}`;
+
+            const targetedDropdown = document.getElementById(`dropdown-t${i}`);
+            
+            if (targetedDropdown) {
+                let innerTicketsHTML = '';
+                
+                for (let j = 1; j <= count; j++) {
+                    const exactSeatNumber = seatArray[j - 1] || (j);
+                    
+                    const generatedTicketNum = "06015" + Math.floor(100000 + Math.random() * 900000);
+                    const generatedAppNum = "12210" + Math.floor(10000 + Math.random() * 90000);
+
+                    innerTicketsHTML += `
+                    <div class="inner-ticket-box">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <div style="font-size: 13px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px;">Ticket Price</div>
+                            <div style="font-size: 13px; color: #555; font-weight: 500;">${seating} - Seat ${exactSeatNumber}</div>
+                            
+                            <div class="printable-toggle" style="margin-top: 16px; font-size: 12px; color: #b45309; display: flex; align-items: center; gap: 6px; font-weight: 700; cursor: pointer; user-select: none;">
+                                <span class="bullet" style="color: #d97706; font-size: 14px;">●</span> <span class="printable-text">This ticket is not printable</span>
+                            </div>
+                            <input type="checkbox" class="ticket-item-checkbox" style="display:none;">
+                        </div>
+
+                        <div style="text-align: right; display: flex; flex-direction: column; gap: 4px;">
+                            <div style="font-size: 13px; font-weight: 700; color: #1a1a1a;">Ticket ${generatedTicketNum}</div>
+                            <div style="font-size: 12px; color: #0a4dff; font-weight: 600; line-height: 1.3; margin-top: 2px;">
+                                Ticket application<br>number ${generatedAppNum}
+                            </div>
+                        </div>
+                    </div>`;
+                }
+
+                targetedDropdown.innerHTML = `
+                    <div style="font-size: 13px; font-weight: 500; color: #333; margin-bottom: 16px;">Teams - ${price} ${currency}</div>
+                    ${innerTicketsHTML}
+                `;
+            }
+        }
+    });
+
+    // --- UPDATED INTERACTION LOGIC (DROPDOWN TOGGLE, PRINTABLE, SELECT ALL, REMOVE ALL) ---
+
+    function updateActionBar() {
+        const checkedItems = document.querySelectorAll('.ticket-item-checkbox:checked');
+        const bar = document.getElementById('transferActionBar');
+        const countText = document.getElementById('selectionText');
+        if (checkedItems.length > 0) {
+            bar.style.display = 'flex';
+            countText.textContent = checkedItems.length + (checkedItems.length === 1 ? ' ticket' : ' tickets');
+        } else {
+            bar.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('ticket-item-checkbox')) {
+            updateActionBar();
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        // Printable toggle click
+        if (e.target.closest('.printable-toggle')) {
+            const toggleContainer = e.target.closest('.printable-toggle');
+            const textSpan = toggleContainer.querySelector('.printable-text');
+            const bullet = toggleContainer.querySelector('.bullet');
+            const innerBox = toggleContainer.closest('.inner-ticket-box');
+            const hiddenCheckbox = innerBox ? innerBox.querySelector('.ticket-item-checkbox') : null;
+            
+            if (textSpan && bullet) {
+                if (textSpan.innerText === 'This ticket is not printable') {
+                    textSpan.innerText = 'This ticket is printable';
+                    toggleContainer.style.color = '#16a34a';
+                    bullet.style.color = '#16a34a';
+                    if (hiddenCheckbox) hiddenCheckbox.checked = true;
+                } else {
+                    textSpan.innerText = 'This ticket is not printable';
+                    toggleContainer.style.color = '#b45309';
+                    bullet.style.color = '#d97706';
+                    if (hiddenCheckbox) hiddenCheckbox.checked = false;
+                }
+                if (hiddenCheckbox) {
+                    hiddenCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            }
+        }
+
+        // Select all checkbox
+        if (e.target.classList.contains('ticket-checkbox')) {
+            const card = e.target.closest('.card');
+            const isChecked = e.target.checked;
+            const toggles = card.querySelectorAll('.printable-toggle');
+            const checkboxes = card.querySelectorAll('.ticket-item-checkbox');
+            
+            toggles.forEach(toggle => {
+                const textSpan = toggle.querySelector('.printable-text');
+                const bullet = toggle.querySelector('.bullet');
+                if (isChecked) {
+                    textSpan.innerText = 'This ticket is printable';
+                    toggle.style.color = '#16a34a';
+                    bullet.style.color = '#16a34a';
+                } else {
+                    textSpan.innerText = 'This ticket is not printable';
+                    toggle.style.color = '#b45309';
+                    bullet.style.color = '#d97706';
+                }
+            });
+            checkboxes.forEach(cb => {
+                cb.checked = isChecked;
+                cb.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+        }
+
+        // Remove all tickets from resale (now always visible)
+        if (e.target.closest('.btn-remove-all-tickets')) {
+            const card = e.target.closest('.card');
+            const toggles = card.querySelectorAll('.printable-toggle');
+            const checkboxes = card.querySelectorAll('.ticket-item-checkbox');
+            
+            toggles.forEach(toggle => {
+                const textSpan = toggle.querySelector('.printable-text');
+                const bullet = toggle.querySelector('.bullet');
+                textSpan.innerText = 'This ticket is printable';
+                toggle.style.color = '#16a34a';
+                bullet.style.color = '#16a34a';
+            });
+            checkboxes.forEach(cb => {
+                cb.checked = true;
+                cb.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+            // Optional: uncheck the "Select all" box if it was checked
+            const selectAll = card.querySelector('.ticket-checkbox');
+            if (selectAll) selectAll.checked = false;
+        }
+
+        // Dropdown toggle (now only toggles inner-dropdown-container)
+        if (e.target.closest('.btn-view')) {
+            const btn = e.target.closest('.btn-view');
+            const parentCard = btn.closest('.card');
+            const dropdown = parentCard.querySelector('.inner-dropdown-container');
+            
+            if (dropdown) {
+                const isHidden = dropdown.style.display === 'none' || dropdown.style.display === '';
+                if (isHidden) {
+                    dropdown.style.display = 'block';
+                    btn.classList.add('active-dropdown');
+                    btn.innerHTML = 'Hide my ticket(s) <svg class="icon-svg" style="width:12px; height:12px;" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+                } else {
+                    dropdown.style.display = 'none';
+                    btn.classList.remove('active-dropdown');
+                    btn.innerHTML = 'View my ticket(s) <svg class="icon-svg" style="width:12px; height:12px;" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+                }
+            }
+        }
+    });
+
+    // --- MODAL LOGIC (unchanged) ---
+    const pop = document.getElementById('transferActionBar');
+    const transferModal = document.getElementById('transferModal');
+    const successModal = document.getElementById('successModal');
+    
+    document.getElementById('openModalBtn').addEventListener('click', () => transferModal.style.display = 'flex');
+    function closeTransferModal() { transferModal.style.display = 'none'; }
+    document.getElementById('closeModalBtn').addEventListener('click', closeTransferModal);
+
+    document.getElementById('confirmTransferBtn').addEventListener('click', () => {
+        closeTransferModal();
+        successModal.style.display = 'flex';
+        
+        document.querySelectorAll('.ticket-item-checkbox:checked').forEach(cb => {
+            const card = cb.closest('.card');
+            if (card) card.remove();
+        });
+        pop.style.display = 'none';
+    });
+
+    document.getElementById('closeSuccessBtn').addEventListener('click', () => {
+        successModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target == transferModal) closeTransferModal();
+        if (event.target == successModal) successModal.style.display = 'none';
+    });
+    </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
