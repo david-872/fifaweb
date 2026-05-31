@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My homepage | FIFA</title>
+    <style>
+        /* RESET & BASE STYLES */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.4;
+        }
+        a { color: #0a4dff; text-decoration: none; cursor: pointer; }
+        a:hover { text-decoration: underline; }
+
+        /* HEADER */
+        header {
+            background-color: #000;
+            color: #fff;
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .fifa-text-logo { font-size: 28px; font-weight: 800; letter-spacing: -1.5px; }
+        .fifa-text-logo sup { font-size: 11px; font-weight: 600; vertical-align: super; }
+        
+        .header-main-logo { height: 52px; width: auto; display: block; }
+
+        .header-right { display: flex; align-items: center; gap: 18px; }
+        .visa-pill {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid #444;
+            padding-right: 15px;
+            margin-right: 5px;
+        }
+        .visa-brand { display: flex; align-items: center; gap: 6px; font-style: italic; font-weight: 900; font-size: 16px; line-height: 1; }
+        .mini-logo-img { height: 18px; width: auto; display: block; }
+        .visa-pill .tagline { font-size: 9px; color: #cfcfcf; font-style: normal; font-weight: 400; margin-top: 3px; }
+
+        .nav-link { color: #fff; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
+        .nav-sep { color: #444; }
+
+        /* MAIN LAYOUT */
+        .container {
+            max-width: 1280px;
+            margin: 36px auto;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 28px;
+            padding: 0 24px;
+        }
+
+        .card { background: #fff; border-radius: 6px; padding: 28px 32px; }
+
+        /* CONTENT AREA */
+        h1 { font-size: 28px; font-weight: 800; margin-bottom: 22px; }
+        h2 { font-size: 18px; font-weight: 700; margin-bottom: 22px; }
+        .content-body p { margin-bottom: 14px; font-size: 14px; line-height: 1.55; color: #1a1a1a; }
+        .resale-list-item { margin-bottom: 14px; font-size: 14px; }
+
+        /* SIDEBAR */
+        aside { display: flex; flex-direction: column; gap: 18px; }
+        .side-nav { padding: 8px 0; }
+        .side-nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 22px;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 500;
+            gap: 12px;
+        }
+        .side-nav-item:hover { background: #f3f3f3; text-decoration: none; }
+        .side-nav-item.active { background: #ededed; font-weight: 700; }
+        .side-nav-item.indent { padding-left: 54px; color: #0a4dff; font-weight: 500; }
+        .icon-svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+        /* SIDEBAR IMAGES */
+        .sidebar-img {
+            width: 100%;
+            display: block;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .info-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+        .info-card p { font-size: 14px; line-height: 1.5; }
+        .info-card ul { list-style: none; }
+        .info-card ul li { margin-bottom: 6px; }
+        .info-card ul li a { font-size: 14px; }
+
+        /* FOOTER */
+        footer { background: #000; color: #fff; margin-top: 40px; padding-bottom: 20px; }
+        .footer-top {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 28px 32px;
+            display: flex;
+            align-items: center;
+        }
+        .footer-fifa-logo { font-weight: 800; font-size: 22px; }
+        .socials { display: flex; gap: 26px; margin-left: 30px; }
+        .socials svg { width: 20px; height: 20px; fill: #fff; }
+
+        .partners-section { padding: 30px 32px; max-width: 1280px; margin: 0 auto; text-align: center; }
+        .partner-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 18px; color: #fff; }
+        .partner-row { display: flex; justify-content: space-around; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+        .brand { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+        .brand.italic { font-style: italic; }
+        .brand.thin { font-weight: 300; }
+
+        .copyright { max-width: 1280px; margin: 0 auto; padding: 18px 32px; text-align: right; font-size: 11px; color: #ccc; }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            header { height: auto; padding: 14px 16px; flex-direction: column; gap: 10px; }
+            .header-right { width: 100%; flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <div class="fifa-text-logo">FIFA<sup>®</sup></div>
+            <img src="logo-2026.png" alt="FIFA 26 Logo" class="header-main-logo">
+        </div>
+        <div class="header-right">
+            <div class="visa-pill">
+                <div class="visa-brand">
+                    <span>VISA</span>
+                    <span style="font-weight:300; font-style:normal; opacity:0.5;">|</span> 
+                    <img src="logo-2026.png" alt="Logo" class="mini-logo-img">
+                </div>
+                <div class="tagline">The Official Way to Pay</div>
+            </div>
+            <a href="#" class="nav-link">EN</a>
+            <span class="nav-sep">|</span>
+            <a href="#" class="nav-link">RESELL</a>
+            <span class="nav-sep">|</span>
+            <a href="#" class="nav-link">BUY TICKETS</a>
+            <span class="nav-sep">|</span>
+            <a href="#" class="nav-link" id="displayNameHeader">OBINNA OGBONNA</a>
+            <span class="nav-sep">|</span>
+            <a href="#" class="nav-link" id="logoutBtn">LOGOUT</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <section class="card">
+                <h1>My homepage</h1>
+                <h2 id="displayNameBody">Obinna Ogbonna</h2>
+                
+                <div class="content-body">
+                    <p><strong id="displayWelcome">Welcome to your FIFA ticketing account!</strong></p>
+                    <p><strong>The FIFA Resale Marketplace reopened on 2 April 2026 at 11:00 am (Eastern Time) / 17:00 (Central European Time).</strong></p>
+                    <p>The actions you can take within the Resale Marketplace include:</p>
+                    
+                    <p class="resale-list-item">1. Reselling tickets</p>
+                    <p class="resale-list-item">2. Withdrawing tickets listed for resale</p>
+                    <p class="resale-list-item">3. Transferring tickets using the Ticket Transfer feature</p>
+                    <p class="resale-list-item">4. Purchasing tickets listed for resale</p>
+
+                    <p>If you are a Participating Member Association (PMA) Supporter, you may be eligible to purchase and resell Supporter Tickets from the Resale Marketplace. Each Participating Member Association sets its own criteria for whether its supporters can resell Supporter Tickets in the FIFA Resale Marketplace. If you choose to resell your PMA Supporter tickets, they will be available only to eligible fans, meaning your PMA Supporter ticket will be visible only to a specific number of fans.</p>
+                    
+                    <p>Ticket resale prices on the FIFA Resale Marketplace may vary depending on the host country and ticket product. <strong>Please note that the fee for purchasing or reselling tickets on the FIFA Resale Marketplace is 15% of the total price, inclusive of taxes.</strong> The final cost, including this fee, will be displayed on the FIFA Resale Marketplace when purchasing or reselling tickets.</p>
+                    
+                    <p>For more information on the FIFA Resale Marketplace, please visit our <a href="#">FAQs</a>.</p>
+                </div>
+            </section>
+        </main>
+
+        <aside>
+            <div class="card" style="padding: 0;">
+                <nav class="side-nav">
+                    <a href="#" class="side-nav-item active">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+                        Homepage
+                    </a>
+                    <div class="side-nav-item">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V9z"/></svg>
+                        TICKETS
+                    </div>
+                    <a href="admin-resell.html"  style="color: #000; text-decoration: none; " class="side-nav-item indent">My tickets</a>
+                    <a href="resell.html" style="color: #000;" class="side-nav-item indent" >Resell/Transfer Tickets</a> 
+                    <a href="#"  style="color: #000;" class="side-nav-item indent">Ticket purchase summary</a>
+                    
+                    <div class="side-nav-item">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Account settings
+                    </div>
+                    <a href="admin.html"   style="color: #000;text-decoration: none" class="side-nav-item indent">Profile</a>
+                    
+                    <a href="#" class="side-nav-item">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                        Buy tickets
+                    </a>
+                </nav>
+            </div>
+
+            <img src="visa-card.png" alt="Visa - The Official Way to Pay" class="sidebar-img">
+
+            <img src="hospitality-promo.png" alt="Get more out of matchday with ticket-inclusive hospitality" class="sidebar-img">
+
+            <div class="card info-card">
+                <h3>Keep your details up to date</h3>
+                <p>Please update your contact information regularly in order to receive updates regarding your ticket(s).</p>
+            </div>
+
+            <div class="card info-card">
+                <h3>General information</h3>
+                <ul>
+                    <li><a href="#">Legal documents</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Match schedule</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <div class="footer-top">
+            <div class="footer-fifa-logo">FIFA<sup>®</sup></div>
+            <div class="socials">
+                <a href="#"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                <a href="#"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                <a href="#"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204 0 8.741 0 12s.014 3.667.072 4.947c.2 4.353 2.62 6.777 6.98 6.977 1.28.057 1.688.072 4.948.072s3.667-.015 4.947-.072c4.351-.2 6.777-2.62 6.977-6.977.058-1.28.072-1.689.072-4.948s-.015-3.667-.072-4.947c-.2-4.351-2.62-6.777-6.977-6.977C15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>
+                <a href="#"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+            </div>
+        </div>
+
+        <div class="partners-section">
+            <div class="partner-label">FIFA PARTNERS</div>
+            <div class="partner-row">
+                <div class="brand thin">aramco</div>
+                <div class="brand">adidas</div>
+                <div class="brand">ADI</div>
+                <div class="brand italic">Coca-Cola</div>
+                <div class="brand">HYUNDAI | KIA</div>
+                <div class="brand">Lenovo</div>
+                <div class="brand">QATAR AIRWAYS</div>
+                <div class="brand italic">VISA</div>
+            </div>
+            <div class="partner-label">SPONSORS</div>
+            <div class="partner-row">
+                <div class="brand italic">Budweiser</div>
+                <div class="brand">BANK OF AMERICA</div>
+                <div class="brand">Hisense</div>
+                <div class="brand">Lay's</div>
+                <div class="brand">M</div>
+                <div class="brand">蒙牛</div>
+                <div class="brand italic">Dove</div>
+                <div class="brand">verizon</div>
+            </div>
+            <div class="partner-label">SUPPORTERS</div>
+            <div class="partner-row">
+                <div class="brand">Valvoline</div>
+            </div>
+        </div>
+
+        <div class="copyright">Copyright © 1994-2026 FIFA. All rights reserved.</div>
+    </footer>
+
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', function(e){
+            e.preventDefault();
+            if (confirm('Log out of your FIFA account?')) {
+                alert('Logged out (demo).');
+                window.location.reload();
+            }
+        });
+
+        // Fixed Sidebar navigation logic
+        document.querySelectorAll('.side-nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Only prevent default navigation if the link is a placeholder ("#")
+                if (this.tagName === 'A' && this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+                
+                document.querySelectorAll('.side-nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+// NEW SCRIPT ADDED FOR STEP 2 (Updating Text via Admin Page)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Retrieve the saved values from localStorage
+            const savedName = localStorage.getItem('page_name');
+            const savedWelcome = localStorage.getItem('page_welcome');
+
+            // If a name was saved, update both the header and the body text
+            if (savedName) {
+                document.getElementById('displayNameHeader').innerText = savedName.toUpperCase();
+                document.getElementById('displayNameBody').innerText = savedName;
+            }
+
+            // If a welcome message was saved, update it
+            if (savedWelcome) {
+                document.getElementById('displayWelcome').innerText = savedWelcome;
+            }
+        });
+    </script>
+</body>
+</html>

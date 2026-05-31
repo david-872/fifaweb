@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Editor</title>
+    <style>
+        body { font-family: sans-serif; background: #f5f5f5; padding: 40px; }
+        .admin-card { background: #fff; max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; }
+        label { font-weight: bold; display: block; margin-top: 15px; margin-bottom: 5px; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; }
+        textarea { height: 100px; resize: vertical; }
+        button { margin-top: 20px; padding: 12px 20px; background: #0a4dff; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; }
+        button:hover { background: #0033cc; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-card">
+        <h1>Edit Page Content</h1>
+        
+        <label for="edit-name">Account Name</label>
+        <input type="text" id="edit-name" placeholder="e.g., Obinna Ogbonna">
+
+        <label for="edit-welcome">Welcome Message (Bold text)</label>
+        <textarea id="edit-welcome" placeholder="Welcome to your FIFA ticketing account!"></textarea>
+
+        <button id="saveBtn">Save Changes</button>
+    </div>
+
+    <script>
+        // 1. When the admin page loads, fill the inputs with previously saved data (if any)
+        document.getElementById('edit-name').value = localStorage.getItem('page_name') || 'Obinna Ogbonna';
+        document.getElementById('edit-welcome').value = localStorage.getItem('page_welcome') || 'Welcome to your FIFA ticketing account!';
+
+        // 2. When the Save button is clicked, store the new text into localStorage
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            const newName = document.getElementById('edit-name').value;
+            const newWelcome = document.getElementById('edit-welcome').value;
+
+            localStorage.setItem('page_name', newName);
+            localStorage.setItem('page_welcome', newWelcome);
+
+            alert('Changes saved! You can now refresh your main homepage.');
+        });
+    </script>
+</body>
+</html>
